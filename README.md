@@ -74,21 +74,21 @@ Basic USAGE:
 			<Hint-string> is optional and is used to output a human readable explanation of the rule 
 				when dump() is used to dump the rules
 
-		Example:
+Example:
 
 			$trout->get('/?', function () { require_once "main.php"; }, "The site's main page");
 
 
-		Or, add a RESTful resource using a controller class
+Or, add a RESTful resource using a controller class.
 
-		Example:
+Example:
 			
 			require "inc/controllers/products.php"; # declares class ProductsController
 			$trout->resource('/products', "ProductsController");
 
-		Remark:
+Remark:
 
-			The controller class should implement any public method used by trout to map requests to controller actions, that is:
+The controller class should implement any public method used by trout to map requests to controller actions, that is:
 
 				public function index() { ... }
 				public function form() { ... }
@@ -98,13 +98,13 @@ Basic USAGE:
 				public function create() { ... }
 				public function delete($id) { ... }
 
-			Note that some actions expect a parameter '$id' (name it accordingly)
-			You may implement only a subset of the action methods in which case only those actions will trigger the creation of rules
+Note that some actions expect a parameter '$id' (name it accordingly)
+You may implement only a subset of the action methods in which case only those actions will trigger the creation of rules
 
-			! If you want to change the request to controller actions mappings you may override Trout 
-			to provide a custom protected $_resource_actions
+! If you want to change the request to controller actions mappings you may override Trout 
+to provide a custom protected $_resource_actions
 
-			Also note that the order of rules declaration is important because Trout will try to match them in their declaration order.
+Also note that the order of rules declaration is important because Trout will try to match them in their declaration order.
 
 3) Now that your rules are set, let the trout swim
 
