@@ -1,5 +1,5 @@
-Trout
-=====
+Trout >>~O°>
+============
 
 TROUT is a Tiny ROUTer in PHP.
 Use it to route HTTP requests to your PHP controller code.
