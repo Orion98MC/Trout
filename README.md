@@ -1,7 +1,7 @@
 Trout
 =====
 
-TROUT is a Tiny ROUTer in PHP
+TROUT is a Tiny ROUTer in PHP.
 Use it to route HTTP requests to your PHP controller code.
 		
 MOTIVATIONS:
@@ -16,7 +16,9 @@ MOTIVATIONS:
 
 Enters TROUT >>~O°>
 
-* No dependencies, no enforced conventions. It's not a framework!
+* No dependencies, no enforced conventions. 
+
+It's not a framework!
 	
 	You put your views, your controllers etc ... where you want.
 	You don't need to subclass any 'base' controller class to provide controller objects.
@@ -24,6 +26,8 @@ Enters TROUT >>~O°>
 * Very light-weight: Only 1 file to require, less than 200 lines of code.
 
 * Very few methods to learn:
+
+10 methods to know about
 
 	get(), put(), post(), delete(), any() 	# use these to declare custom routes
 	resource() 								# use this method to declare a RESTful resource
@@ -33,7 +37,7 @@ Enters TROUT >>~O°>
 
 * Nice routes output for debugging.
 
-	(tested on PHP 5+)
+(tested on PHP 5+)
 
 
 Copyright (C) 2012 Thierry Passeron
@@ -44,7 +48,7 @@ MIT License (see below)
 Basic USAGE:
 ============
 
-	1) Require the file and create a new Trout:
+1) Require the file and create a new Trout:
 		
 		Example:
 
@@ -54,7 +58,7 @@ Basic USAGE:
 
 			$trout = new Trout();
 
-	2) Add custom rules using either:
+2) Add custom rules using either:
 
 		any(<Regexp-string>, <Callback-function> [, <Hint-string>]) 	# will be triggered before any (get()/post()/put()/delete()) rule
 		get(<Regexp-string>, <Callback-function> [, <Hint-string>]) 	# will be triggered if the GET request matches
@@ -102,7 +106,7 @@ Basic USAGE:
 
 			Also note that the order of rules declaration is important because Trout will try to match them in their declaration order.
 
-	3) Now that your rules are set, let the trout swim
+3) Now that your rules are set, let the trout swim
 
 			$trout->swim();
 
@@ -124,7 +128,6 @@ More Examples:
 	$tr->dump(); // Shows the routes
 
 	// This will output:
-	<pre>
 		*ANY* .*                                   Login required
 		   GET /applications/?                   List Applications
 		   GET /applications/new              New Application form
@@ -132,7 +135,7 @@ More Examples:
 		  POST /applications/?                Create an Application
 		   PUT /applications/([^/]+)            Update Application
 		DELETE /applications/([^/]+)            Delete Application
-	</pre>
+
 
 
 	// If you prefer the OOP style:
@@ -152,14 +155,13 @@ More Examples:
 	$tr->resource('/stores', "StoresController");
 
 	// which would generate these routes:
-	<pre>
 	   GET /stores                                 Stores list
 	   GET /stores/new                         new Stores form
 	   GET /stores/([^/]+)                         Stores show
 	  POST /stores                               Stores create
 	   PUT /stores/([^/]+)                       Stores update
 	DELETE /stores/([^/]+)                       Stores delete
-	</pre>
+
 
 
 	// Now let's test the routes
@@ -173,14 +175,13 @@ More Examples:
 	$tr->swim("DELETE", "/applications/123", $verbose);
 
 	// This will output:
-	<pre>
 		Applications list
 		New application form
 		Get Application '123'
 		Update Application '123'
 		Create an Application
 		Delete Application '123'
-	</pre>
+	
 
 
 "real-life" example:
