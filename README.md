@@ -121,10 +121,11 @@ The controller class should implement any or all of the public methods expected 
 				public function create() { ... }
 				public function delete($id) { ... }
 
-Note that some actions expect a parameter '$id' (name it accordingly)
+Note that some actions expect a parameter '$id' (name it accordingly).
+
 Trout will only create resource routing rules for actions that are implemented. You can for example implement a controller class with only #index() public instance method, in which case only one (corresponding) routing rule will be created by Trout.
 
-! If you want to change the request to controller actions mappings you may override Trout 
+If you want to change the request to controller actions mappings you may override Trout 
 to provide a custom protected $_resource_actions
 
 

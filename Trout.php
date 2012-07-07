@@ -80,7 +80,7 @@
 
 		// Declare a RESTful resource at path.
 		// You may nest the resource path (i.e. include regexp groups in the path). 
-		// Nested params could be processed by providing the options hash a 'nested_params_handler' function which takes 2 arguments: the controller instance and the nested params.
+		// Nested params could be processed by providing the options hash a 'nested_params_handler' function which takes 2 arguments: the controller instance and the nested params array.
 		// Example: $trout->resource('/apps/([^/]+)/stores', "StoresController", function ($storeCtlr, $params) { $storeCtlr->appId = $params[0]; });
 		public function resource($path, $class_name, $options = null) { 
 			if (isset($options)) {
