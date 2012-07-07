@@ -12,7 +12,7 @@ Features
 
 * Very light-weight: Only 1 file to require, less than 200 lines of code
 
-* Very few (10) methods to learn
+* Very few methods to learn
 
 * Routes use RegExp
 
@@ -334,10 +334,11 @@ You use the lastRule() method to do so. Example:
 
 Public ivars:
 =============
-$out_buffer: an array of rules outputs
-$method: the method of the current request
-$uri: the uri of the current request
-$error: contains the error message and code in case swim() did not succeed 
+	
+	$out_buffer: an array of rules outputs
+	$method: the method of the current request
+	$uri: the uri of the current request
+	$error: contains the error message and code in case swim() did not succeed 
 	
 	$error = array(
 		'code' => <error-code-string>, 
