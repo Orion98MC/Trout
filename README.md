@@ -1,36 +1,20 @@
 Trout
 =====
 
-  
-
-TROUT >>~O°>  is a Tiny ROUTer in PHP.
+TROUT >>~O°> is a Tiny ROUTer in PHP.
 
 Use it to route HTTP requests to your PHP controller code.
 		
-MOTIVATIONS:
-
-		I didn't find any "simple" routing script on the net. 
-		I didn't want to learn yet an other framework to do so.
-		I didn't want a solution that enforces me to some specific conventions.
-		I didn't want a full fledged solution with views templating etc...
-		I wanted something simple and very light-weight
-		I wanted to do all the routings in a very-easy-to-re-read-later way (easier to maintain)
-
-
-Enters TROUT >>~O°>
-
 * No dependencies, no enforced conventions. 
 
-It's not a framework!
+* It's not a framework!
 	
-	You put your views, your controllers etc ... where you want.
-	You don't need to subclass any 'base' controller class to provide controller objects.
+You put your views, your controllers etc ... where you want.
+You don't need to subclass any 'base' controller class to provide controller objects.
 
 * Very light-weight: Only 1 file to require, less than 200 lines of code.
 
-* Very few methods to learn:
-
-10 methods to know about
+* Very few methods to learn: 10 methods to know about
 
 	get(), put(), post(), delete(), any() 	# use these to declare custom routes
 	resource() 								# use this method to declare a RESTful resource
@@ -38,30 +22,64 @@ It's not a framework!
 	swim() 									# the Trout swim method!
 	dump() 									# displays the routes
 
+* Routes use RegExp
+
 * Nice routes output for debugging.
 
-(tested on PHP 5+)
+* Tested on PHP 5+
 
 
 Copyright (C) 2012 Thierry Passeron
+
 MIT License (see below)
 
 
 
-Basic USAGE:
-============
+Basics
+======
 
 1) Require the file and create a new Trout:
 		
-		Example:
+	require 'lib/Trout.php';
+	$trout = new Trout();
 
-			<?php
+2) Add routing rules:
 
-			require 'lib/Trout.php';
+	// Either require a php file
+	$trout->get('/', function () { require_once "inc/home.php"; });
 
-			$trout = new Trout();
+	// Or directly output the content
+	$trout->get('/about', function () {
+		echo "Please contact us at info@foo.bar";
+	});
 
-2) Add custom rules using either:
+3) Need more ?
+
+	// How about a route for POSTing stuff ?
+	$trout->post('/events', function () { require_once "inc/create_event.php"; });
+
+	// Or PUT ?
+	$trout->put('/avatar/([^/]+)', function ($avatar_id) { require_once "inc/update_avatar.php"; });
+
+	// Or DELETE ?
+	$trout->delete('/events/([^/]+)', function ($event_id) { require_once "inc/delete_event.php"; });
+
+	// Or a set of routes that map to a RESTful resource
+		require_once "inc/CommentsController.php";
+	$trout->resource('/comments', "CommentsController");
+
+4) Let it go...
+
+You need to call the #swim() method to let the routing start.
+
+	if (!$trout->swim()) { require_once "inc/routing_error.php; }
+
+
+Advanced
+========
+
+Routing methods
+---------------
 
 		any(<Regexp-string>, <Callback-function> [, <Hint-string>]) 	# will be triggered before any (get()/post()/put()/delete()) rule
 		get(<Regexp-string>, <Callback-function> [, <Hint-string>]) 	# will be triggered if the GET request matches
@@ -77,6 +95,8 @@ Basic USAGE:
 			<Hint-string> is optional and is used to output a human readable explanation of the rule 
 				when dump() is used to dump the rules
 
+Note that the order of rules declaration is important because Trout will try to match them in their declaration order.
+
 Example:
 
 			$trout->get('/?', function () { require_once "main.php"; }, "The site's main page");
@@ -91,7 +111,7 @@ Example:
 
 Remark:
 
-The controller class should implement any public method used by trout to map requests to controller actions, that is:
+The controller class should implement any public method expected by trout to map requests to controller actions, that is:
 
 				public function index() { ... }
 				public function form() { ... }
@@ -107,7 +127,7 @@ You may implement only a subset of the action methods in which case only those a
 ! If you want to change the request to controller actions mappings you may override Trout 
 to provide a custom protected $_resource_actions
 
-Also note that the order of rules declaration is important because Trout will try to match them in their declaration order.
+
 
 3) Now that your rules are set, let the trout swim
 
@@ -130,7 +150,7 @@ More Examples:
 
 	$tr->dump(); // Shows the routes
 
-	// This will output:
+	// This will output something like:
 		*ANY* .*                                   Login required
 		   GET /applications/?                   List Applications
 		   GET /applications/new              New Application form
@@ -358,9 +378,8 @@ When something is not working as expected you may:
 	
 	$tr->swim(null, null, true);
 
-
 * test a rule with a custom-made request
-
+	
 	$tr->swim('PUT', '/product/1234', $verbose);
 
 * output the rules to see if they are okay
@@ -375,18 +394,22 @@ When something is not working as expected you may:
 TODO:
 =====
 
-I'd like to have a test-suite to test the class. (HELP! :)
+* have a test-suite to test the class. (help appreciated)
 
 
 Contact:
 ========
-If you find Trout useful drop me a line on github it will make my day ;).
-If you'd like some new features implemented, feel free to ask me AND feel free to fork on github.
-If you don't like Trout, it's not a problem, go get a salmon instead. 
+
+If you find Trout useful drop me a line ;).
+If you'd like some new features implemented, feel free to ask me and feel free to fork the project on github.
+If you don't like Trout, it's not a problem, try Salmon.
 
 
 License terms:
 ==============
+
+The MIT License
+
 Copyright (C) 2012 Thierry Passeron
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -401,9 +424,3 @@ TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONIN
 THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 DEALINGS IN THE SOFTWARE.
-
-
-Misc:
-=====
-
-For any other details, read the class. It's less than 200 lines...

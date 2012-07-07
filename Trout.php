@@ -8,7 +8,6 @@
 	Use TROUT to route HTTP requests to your PHP controller code.
 
 
-
 	Copyright (C) 2012 Thierry Passeron
 	
 	MIT License
