@@ -14,6 +14,8 @@ Features
 
 * Very few methods to learn
 
+* RESTful (nested or not) resource routing
+
 * Routes use RegExp
 
 * Nice routes output for debugging
@@ -104,7 +106,7 @@ Example:
 RESTful Resource routing
 ------------------------
 
-You may declare RESTful resource if you provide a controller class.
+You may declare a RESTful resource if you provide a controller class.
 
 Example:
 			
