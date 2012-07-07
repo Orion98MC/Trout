@@ -90,23 +90,28 @@ Routing methods
 			<Hint-string> is optional and is used to output a human readable explanation of the rule 
 				when dump() is used to dump the rules
 
-Note that the order of rules declaration is important because Trout will try to match them in their declaration order.
+* The order of rules declaration (within the same class of routes i.e. within 'get', or 'post' etc...) is important because Trout will try to match them in their declaration order.
+
+* The first rule to output something (on the output buffer) is considered the last rule.
+
+* You may need to call #lastRule() if you are only sending headers.
 
 Example:
 
 			$trout->get('/?', function () { require_once "main.php"; }, "The site's main page");
 
 
-Or, add a RESTful resource using a controller class.
+RESTful Resource routing
+------------------------
+
+You may declare RESTful resource if you provide a controller class.
 
 Example:
 			
 			require "inc/controllers/products.php"; # declares class ProductsController
 			$trout->resource('/products', "ProductsController");
 
-Remark:
-
-The controller class should implement any public method expected by trout to map requests to controller actions, that is:
+The controller class should implement any or all of the public methods expected by trout to map HTTP requests to controller actions, that is:
 
 				public function index() { ... }
 				public function form() { ... }
@@ -117,21 +122,16 @@ The controller class should implement any public method expected by trout to map
 				public function delete($id) { ... }
 
 Note that some actions expect a parameter '$id' (name it accordingly)
-You may implement only a subset of the action methods in which case only those actions will trigger the creation of rules
+Trout will only create resource routing rules for actions that are implemented. You can for example implement a controller class with only #index() public instance method, in which case only one (corresponding) routing rule will be created by Trout.
 
 ! If you want to change the request to controller actions mappings you may override Trout 
 to provide a custom protected $_resource_actions
 
 
+Examples
+========
 
-3) Now that your rules are set, let the trout swim
-
-			$trout->swim();
-
-
-More Examples:
-==============
-
+	require 'lib/Trout.php';
 	$tr = new Trout();
 
 	// Now declare some routes...
@@ -154,9 +154,6 @@ More Examples:
 		   PUT /applications/([^/]+)            Update Application
 		DELETE /applications/([^/]+)            Delete Application
 
-
-
-	// If you prefer the OOP style:
 	// Declare a controller class...
 	class StoresController {
 		public function index() { echo "Index\n"; }
@@ -180,8 +177,6 @@ More Examples:
 	   PUT /stores/([^/]+)                       Stores update
 	DELETE /stores/([^/]+)                       Stores delete
 
-
-
 	// Now let's test the routes
 
 	$verbose = false;
@@ -202,40 +197,14 @@ More Examples:
 	
 
 
-"real-life" example:
-====================
+Web server configuration
+========================
 
-	index.php
-	---------
-	<?php
-	require_once "path/to/Trout.php";
+Apache configuration
+--------------------
 
-	$tr = new Trout();
-	$tr->get('/?', function () { 
-		require_once "path/to/main.php";
-	});
+Set the "One-index-file" scheme in .htaccess 
 
-	$tr->get('/about_us', function () {
-		require_once "path/to/about.php";
-	});
-
-	$tr->get('/project/([0-9]+)', function ($projectId) {
-		require_once "path/to/projects.php";
-	});
-
-	$tr->post('/project/?', function () { 
-		require_once "path/to/create_project.php";
-	});
-
-	$tr->swim();
-	?>
-
-
-Web configuration (example using Apache):
-=========================================
-
-	Set the One-index-file scheme in .htaccess 
-	------------------------------------------
 	Options +FollowSymlinks
 
 	RewriteEngine On
@@ -249,8 +218,8 @@ Web configuration (example using Apache):
 	RewriteRule ^(.*) index.php [QSA,L]
 
 
-	Declare an apache vhost:
-	------------------------
+Declare an apache vhost:
+
 	<VirtualHost *:80>
 	    ServerName trout.local
 	    DocumentRoot "/path/to/Trout-site"
@@ -261,20 +230,24 @@ Web configuration (example using Apache):
 	</VirtualHost>
 
 
-	Set name resolution in /etc/hosts
-	---------------------------------
+Set name resolution in /etc/hosts
+
 	[...]
 	fe80::1%lo0	trout.local # REM: on OSX, it helps a lot to set the ipv6 local address!
 	127.0.0.1	trout.local
 	[...]
 
 
-	Don't forget to restart your web server!
-	Now you can browse http://trout.local 
+Don't forget to restart your web server!
+
+Now you can browse http://trout.local 
 
 
-Customization:
-==============
+Customization
+=============
+
+Subclassing Trout
+-----------------
 
 You can subclass Trout to provide a custom isLastRule() method. 
 This method is used after swimming each routes to determine if we stop swimming and flush the outputs.
@@ -288,8 +261,8 @@ The default behavior is to consider any rule that outputs something as the last 
 	}
 
 
-Layout:
-=======
+Layout
+------
 
 By default the flush function just outputs contents captured during execution of the rules.
 The flush() is called when a rule is the last rule.
@@ -303,6 +276,7 @@ You can set a custom flush method without needing to subclass like this:
 
 Example layout.php:
 -------------------
+
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -319,8 +293,9 @@ Example layout.php:
 	</html>
 
 
-Headers:
-========
+Headers
+-------
+
 Sometimes you just need to set a response header for example when redirecting to an uri. In this case you will not output anything.
 But the Trout needs to be aware that the current route should be treated as the last rule. 
 You use the lastRule() method to do so. Example:
@@ -332,13 +307,13 @@ You use the lastRule() method to do so. Example:
 		header('Location: ' + $uri);
 	}
 
-Public ivars:
-=============
+Public ivars
+------------
 	
-	$out_buffer: an array of rules outputs
-	$method: the method of the current request
-	$uri: the uri of the current request
-	$error: contains the error message and code in case swim() did not succeed 
+	$out_buffer: 	an array of rules outputs
+	$method: 		the method of the current request
+	$uri: 			the uri of the current request
+	$error: 		contains the error message and code in case swim() did not succeed 
 	
 	$error = array(
 		'code' => <error-code-string>, 
@@ -355,8 +330,8 @@ example usage of ivars:
 		} 
 	});
 
-Return status:
-==============
+Return status
+-------------
 
 The "swim loop" is triggered by the swim() method which should be written after routes declaration.
 swim() returns false if an error occured or no route was found as last rule else it returns true.
@@ -370,6 +345,7 @@ Debugging
 =========
 
 When something is not working as expected you may:
+
 * set swim() in verbose mode
 	
 	$tr->swim(null, null, true);
