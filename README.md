@@ -1,37 +1,32 @@
-Trout
-=====
+Description
+===========
 
-TROUT >>~O°> is a Tiny ROUTer in PHP.
+Trout is a Tiny ROUTer in PHP that routes HTTP requests to your PHP controller code.
 
-Use it to route HTTP requests to your PHP controller code.
-		
+Features
+--------
+
 * No dependencies, no enforced conventions. 
 
-* It's not a framework!
-	
-You put your views, your controllers etc ... where you want.
-You don't need to subclass any 'base' controller class to provide controller objects.
+* It's not a framework! You are free to put your views, your controllers etc ... where you want. You don't need to subclass any 'base' controller class to provide controller objects.
 
-* Very light-weight: Only 1 file to require, less than 200 lines of code.
+* Very light-weight: Only 1 file to require, less than 200 lines of code
 
-* Very few methods to learn: 10 methods to know about
-
-	get(), put(), post(), delete(), any() 	# use these to declare custom routes
-	resource() 								# use this method to declare a RESTful resource
-	lastRule(), flush() 					# use these to set custom behaviors
-	swim() 									# the Trout swim method!
-	dump() 									# displays the routes
+* Very few (10) methods to learn
 
 * Routes use RegExp
 
-* Nice routes output for debugging.
+* Nice routes output for debugging
 
 * Tested on PHP 5+
 
 
-Copyright (C) 2012 Thierry Passeron
+License
+-------
 
 MIT License (see below)
+
+Copyright (C) 2012 Thierry Passeron
 
 
 
